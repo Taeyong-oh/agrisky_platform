@@ -113,7 +113,7 @@ export default function AuthPage() {
           <CardHeader className="space-y-1 pb-4">
             <CardTitle className="text-2xl text-center">로그인</CardTitle>
             <CardDescription className="text-center">
-              계정에 로그인하여 농업 드론 서비스를 이용하세요
+              계정에 로그인하여 아그리스카이 서비스를 이용하세요
             </CardDescription>
           </CardHeader>
           <CardContent>

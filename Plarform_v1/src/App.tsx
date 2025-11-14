@@ -145,7 +145,7 @@ function MainApp() {
             >
               <img 
                 src="/logo.png" 
-                alt="AGRISKY 로고" 
+                alt="아그리스카이 로고" 
                 className="h-10 w-auto object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;

@@ -108,7 +108,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             <div className="flex items-center justify-center w-24 h-24 bg-white rounded-2xl shadow-lg p-4">
               <img 
                 src="/logo.jpg" 
-                alt="AGRISKY 로고" 
+                alt="아그리스카이 로고" 
                 className="h-full w-auto object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;

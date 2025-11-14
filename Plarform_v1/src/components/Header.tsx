@@ -25,7 +25,7 @@ export default function Header({ showHomeButton = true, onHomeClick }: HeaderPro
         <div className="flex items-center gap-3 cursor-pointer" onClick={handleHomeClick}>
           <img 
             src="/logo.png" 
-            alt="AGRISKY 로고" 
+            alt="아그리스카이 로고" 
             className="h-12 w-auto object-contain"
             onError={(e) => {
               // 로고 로드 실패 시 jpg 시도

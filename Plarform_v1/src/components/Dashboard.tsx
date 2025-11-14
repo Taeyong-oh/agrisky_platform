@@ -151,7 +151,7 @@ export default function Dashboard() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">농업 드론 AI 플랫폼</h1>
+          <h1 className="text-3xl font-bold tracking-tight">아그리스카이 플랫폼</h1>
           <p className="text-muted-foreground">실시간 드론 작업 모니터링 및 관리</p>
         </div>
         <Button onClick={fetchDashboardData} variant="outline">

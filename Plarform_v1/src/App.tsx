@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/toaster';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { 
   LayoutDashboard, 
   MapPin, 
@@ -9,13 +11,20 @@ import {
   Route, 
   BarChart3,
   Settings,
-  Menu
+  Menu,
+  User,
+  LogOut
 } from 'lucide-react';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import AuthPage from '@/components/AuthPage';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import LandingPage from '@/components/LandingPage';
 import Dashboard from '@/components/Dashboard';
 import FarmlandManagement from '@/components/FarmlandManagement';
 import DroneManagement from '@/components/DroneManagement';
 import WorkMatching from '@/components/WorkMatching';
 import FlightOptimization from '@/components/FlightOptimization';
+import UserProfile from '@/components/UserProfile';
 
 const menuItems = [
   {
@@ -50,8 +59,13 @@ const menuItems = [
   }
 ];
 
-export default function App() {
+function MainApp() {
+  const { user, profile, signOut } = useAuth();
   const [activeComponent, setActiveComponent] = useState("dashboard");
+
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -65,6 +79,8 @@ export default function App() {
         return <WorkMatching />;
       case "optimization":
         return <FlightOptimization />;
+      case "profile":
+        return <UserProfile />;
       case "analytics":
         return (
           <div className="flex items-center justify-center h-64">
@@ -88,8 +104,18 @@ export default function App() {
         <Sidebar>
           <SidebarHeader className="border-b px-6 py-4">
             <div className="flex items-center gap-2">
-              <Plane className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg">농업 드론 AI</span>
+              <img 
+                src="/logo.png" 
+                alt="아그리스카이 로고" 
+                className="h-10 w-auto object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.src.endsWith('.png')) {
+                    target.src = '/logo.jpg';
+                  }
+                }}
+              />
+              <span className="font-bold text-lg">아그리스카이</span>
             </div>
           </SidebarHeader>
           <SidebarContent>
@@ -113,8 +139,63 @@ export default function App() {
         <div className="flex-1 flex flex-col">
           <header className="border-b px-6 py-4 flex items-center gap-4">
             <SidebarTrigger />
+            <div 
+              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setActiveComponent('dashboard')}
+            >
+              <img 
+                src="/logo.png" 
+                alt="AGRISKY 로고" 
+                className="h-10 w-auto object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.src.endsWith('.png')) {
+                    target.src = '/logo.jpg';
+                  }
+                }}
+              />
+              <div className="hidden md:block">
+                <div className="font-bold text-lg">아그리스카이</div>
+                <div className="text-xs text-muted-foreground">지능형 방제 작업 플랫폼</div>
+              </div>
+            </div>
             <div className="flex-1" />
-            <Settings className="h-5 w-5 text-muted-foreground cursor-pointer hover:text-foreground" />
+            
+            {/* 사용자 프로필 영역 */}
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveComponent('profile')}
+                className="flex items-center gap-2"
+              >
+                <User className="h-4 w-4" />
+                <span className="hidden md:inline">마이 페이지</span>
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveComponent('profile')}
+                className="flex items-center gap-2"
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="text-xs">
+                    {profile?.full_name ? getInitials(profile.full_name) : 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="text-left hidden md:block">
+                  <div className="text-sm font-medium">{profile?.full_name || '사용자'}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {profile?.user_type === 'farmer' ? '농가' : '드론 조작자'}
+                  </div>
+                </div>
+              </Button>
+              
+              <Button variant="ghost" size="sm" onClick={signOut} title="로그아웃">
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
           </header>
           
           <main className="flex-1 p-6 overflow-auto">
@@ -124,5 +205,52 @@ export default function App() {
       </div>
       <Toaster />
     </SidebarProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
+  const { user, loading } = useAuth();
+  const [showLanding, setShowLanding] = useState(true);
+
+  // 사용자가 로그인하면 랜딩 페이지 숨기기
+  useEffect(() => {
+    if (user) {
+      setShowLanding(false);
+    }
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 로그인하지 않은 사용자에게 랜딩 페이지 표시
+  if (!user && showLanding) {
+    return <LandingPage onGetStarted={() => setShowLanding(false)} />;
+  }
+
+  // 로그인하지 않았지만 랜딩 페이지를 넘어간 경우 로그인 페이지 표시
+  if (!user) {
+    return <AuthPage />;
+  }
+
+  return (
+    <ProtectedRoute>
+      <MainApp />
+    </ProtectedRoute>
   );
 }

@@ -19,17 +19,17 @@ ssh $SSH_OPTS $SERVER_USER@$SERVER_IP "mkdir -p ~/$PROJECT_DIR"
 
 # 프론트엔드 소스 업로드
 echo "📤 프론트엔드 소스 업로드 중..."
-scp $SSH_OPTS -r Plarform_v1/src $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/frontend-src
-scp $SSH_OPTS Plarform_v1/package.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/vite.config.ts $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/tsconfig.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/tsconfig.app.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/tsconfig.node.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/tailwind.config.ts $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/postcss.config.js $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/index.html $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
-scp $SSH_OPTS Plarform_v1/.env.production $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/ 2>/dev/null || echo "환경 변수 파일 없음"
-scp $SSH_OPTS -r Plarform_v1/public $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS -r Platform_v1/src $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/frontend-src
+scp $SSH_OPTS Platform_v1/package.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/vite.config.ts $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/tsconfig.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/tsconfig.app.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/tsconfig.node.json $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/tailwind.config.ts $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/postcss.config.js $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/index.html $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
+scp $SSH_OPTS Platform_v1/.env.production $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/ 2>/dev/null || echo "환경 변수 파일 없음"
+scp $SSH_OPTS -r Platform_v1/public $SERVER_USER@$SERVER_IP:~/$PROJECT_DIR/
 
 # 백엔드 소스 업로드
 echo "📤 백엔드 소스 업로드 중..."
